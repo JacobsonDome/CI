@@ -4,18 +4,18 @@ on:
     branches:
       - main
       - feature-branch
+      
 jobs:
   my-jobs:
     if: github.ref == 'refs/heads/feature-branch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: my-step1
-#        run: echo ${{github.ref}}
+      - name: dev
         run: |
-          echo "${{secrets.TESTKUNDE1DEV }}" | docker login -u "santosch" --password-stdin
-          docker image build -t santosch/testkunde1dev:v${{ github.run_number }} .
-          docker push santosch/testkunde1dev:v${{ github.run_number }}
+          echo "${{secrets.CIDEV }}" | docker login -u "santosch" --password-stdin
+          docker image build -t santosch/cidev:v${{ github.run_number }} .
+          docker push santosch/cidev:v${{ github.run_number }}
           
   prod:
     if: github.ref == 'refs/heads/main'
