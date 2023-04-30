@@ -1,0 +1,29 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+      - feature-branch
+jobs:
+  my-jobs:
+    if: github.ref == 'refs/heads/feature-branch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: my-step1
+#        run: echo ${{github.ref}}
+        run: |
+          echo "${{secrets.TESTKUNDE1DEV }}" | docker login -u "santosch" --password-stdin
+          docker image build -t santosch/testkunde1dev:v${{ github.run_number }} .
+          docker push santosch/testkunde1dev:v${{ github.run_number }}
+          
+  prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: prod
+        run: |
+         echo "${{secrets.CIPROD }}" | docker login -u "santosch" --password-stdin
+         docker image build -t santosch/ciprod:v${{ github.run_number }} .
+         docker push santosch/ciprod:v${{ github.run_number }}
