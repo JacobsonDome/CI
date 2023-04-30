@@ -6,7 +6,7 @@ on:
       - feature-branch
       
 jobs:
-  my-jobs:
+  dev:
     if: github.ref == 'refs/heads/feature-branch'
     runs-on: ubuntu-latest
     steps:
